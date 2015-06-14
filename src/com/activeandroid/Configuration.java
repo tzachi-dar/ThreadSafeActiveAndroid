@@ -16,20 +16,21 @@ package com.activeandroid;
  * limitations under the License.
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import android.content.Context;
 
 import com.activeandroid.serializer.TypeSerializer;
 import com.activeandroid.util.Log;
 import com.activeandroid.util.ReflectionUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Configuration {
 
     public final static String SQL_PARSER_LEGACY = "legacy";
     public final static String SQL_PARSER_DELIMITED = "delimited";
+	public final static int MAX_SQL_CACHE_SIZE = 100;
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE MEMBERS

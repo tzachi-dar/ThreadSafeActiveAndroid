@@ -61,7 +61,7 @@ public final class ActiveAndroid {
 	}
 
 	public static void beginTransaction() {
-		Cache.openDatabase().beginTransaction();
+		Cache.openDatabase().beginTransactionNonExclusive();
 	}
 
 	public static void endTransaction() {
