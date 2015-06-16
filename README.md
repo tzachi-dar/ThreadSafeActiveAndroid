@@ -1,69 +1,98 @@
-[![Build Status](https://travis-ci.org/pardom/ActiveAndroid.png?branch=master)](https://travis-ci.org/pardom/ActiveAndroid) [![Stories in Ready](https://badge.waffle.io/pardom/ActiveAndroid.png)](http://waffle.io/pardom/ActiveAndroid)  
-# ActiveAndroid
+#Static map
 
-ActiveAndroid is an active record style ORM ([object relational mapper](http://en.wikipedia.org/wiki/Object-relational_mapping)). What does that mean exactly? Well, ActiveAndroid allows you to save and retrieve SQLite database records without ever writing a single SQL statement. Each database record is wrapped neatly into a class with methods like _save()_ and _delete()_.
+[![Maven](https://img.shields.io/badge/maven-0.1.3-brightgreen.svg)](http://search.maven.org/#artifactdetails%7Ccom.github.d-max%7Cstatic-map%7C0.1.3%7Caar)
+[![Blog Post](https://img.shields.io/badge/blog-post-yellow.svg)](http://dybarsky.blogspot.com/2014/08/static-map-library.html)
 
-ActiveAndroid does so much more than this though. Accessing the database is a hassle, to say the least, in Android. ActiveAndroid takes care of all the setup and messy stuff, and all with just a few simple steps of configuration.
+NOT SUPPORTED ANYMORE!
 
-## Download
+Google made its own lite mode of google maps in play services v6.5
+https://developers.google.com/maps/documentation/android/lite
 
-Grab via Maven:
-```xml
-<dependency>
-  <groupId>com.michaelpardo</groupId>
-  <artifactId>activeandroid</artifactId>
-  <version>3.1.0-SNAPSHOT</version>
-</dependency>
-```
-or Gradle:
+==========
+ 
+This is standalone android library developed to generate static map images easily. It is based on [Google Static Maps API][4] and provides **sync** and **async** ways of bitmaps generation.
+
+Next features are supported:
+* Secure access (https)
+* Location (geo position, address)
+* Map types (roads, satellite, etc)
+* Zoom, scale, image size params
+* Markers (without custom icon)
+
+![Example Image1][1] ⠀
+![Example Image2][2] ⠀
+![Example Image3][3]
+
+###Usage
+
+Google Static Map API documentation is available [here][4]. Please, read it first if you are not familiar with service requirements and differences.
+Static-map library available in maven central repository. You can get it using:
 ```groovy
-repositories {
-    mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+dependencies {
+    compile 'com.github.d-max:static-map:0.1+@aar'
 }
-
-compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 ```
+Javadoc and sources package [classigiers][8] available too.
 
-## Documentation
-
-* [Getting started](http://github.com/pardom/ActiveAndroid/wiki/Getting-started)
-* [Creating your database model](http://github.com/pardom/ActiveAndroid/wiki/Creating-your-database-model)
-* [Saving to the database](http://github.com/pardom/ActiveAndroid/wiki/Saving-to-the-database)
-* [Querying the database](http://github.com/pardom/ActiveAndroid/wiki/Querying-the-database)
-* [Type serializers](http://github.com/pardom/ActiveAndroid/wiki/Type-serializers)
-* [Using the content provider](http://github.com/pardom/ActiveAndroid/wiki/Using-the-content-provider)
-* [Schema migrations](http://github.com/pardom/ActiveAndroid/wiki/Schema-migrations)
-* [Pre-populated-databases](http://github.com/pardom/ActiveAndroid/wiki/Pre-populated-databases)
-* [Running the Test Suite](https://github.com/pardom/ActiveAndroid/wiki/Running-the-Test-Suite)
-
-## License
-
-[Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
-
-    Copyright (C) 2010 Michael Pardo
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
-## Contributing
-
-Please fork this repository and contribute back using [pull requests](http://github.com/pardom/ActiveAndroid/pulls).
-
-Any contributions, large or small, major features, bug fixes, unit tests are welcomed and appreciated but will be thoroughly reviewed and discussed.
-
-You can run the test suite by following the instructions on the [Running the Test Suite](https://github.com/pardom/ActiveAndroid/wiki/Running-the-Test-Suite) Wiki page.
+Use [Config][5] class to set map generation basic params. Example:
+```java
+Config config = new Config();
+config.setImageSize(200, 300)
+      .setZoom(10)
+      .setAddress("Kyiv");
+```
+[StaticMap][6] class contais two static methods for map generation. To get map image *synchronously* use like this:
+```java
+try {
+    Bitmap mapImage = StaticMap.requestMapImage(context, config);
+} catch (StaticMapException ex) { /* log */ }
+```
+To get map image *asynchronously*, use another method with [Callback][7] param:
+```java
+Bitmap mapImage;
+Callback callback = new Callback() {
+    public void onFailed(int errorCode, String errorMessage) { /* log */ }
+    public void onMapGenerated(Bitmap bitmap) { mapImage = bitmap; }
+};
+StaticMap.requestMapImage(context, config, callback);
+```
+This method encapsulates AsyncTask class to load image in background.
+**Note:** Callback class methods will be invoked in main thread.
 
 
-## Author
+###Developed By
 
-Michael Pardo | www.michaelpardo.com | www.activeandroid.com
+Maksym Dybarskyi - http://d-max.info
+
+###License
+
+	The MIT License (MIT)
+	Copyright © 2014 Maxim Dybarsky
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the “Software”), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
+
+
+[1]: http://maps.google.com/maps/api/staticmap?size=200x200&center=49,31&zoom=4&maptype=sattelite
+[2]: http://maps.google.com/maps/api/staticmap?size=200x200&center=50,0&zoom=3&maptype=satellite
+[3]: http://maps.google.com/maps/api/staticmap?size=200x200&center=50.4513,30.522&zoom=15&markers=color:blue%7C50.450866,30.522873
+[4]: https://developers.google.com/maps/documentation/staticmaps/
+[5]: library/src/main/java/dmax/staticmap/Config.java
+[6]: library/src/main/java/dmax/staticmap/StaticMap.java
+[7]: library/src/main/java/dmax/staticmap/Callback.java
+[8]: http://www.gradle.org/docs/current/userguide/dependency_management.html#sub:classifiers

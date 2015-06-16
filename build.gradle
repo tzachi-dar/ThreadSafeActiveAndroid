@@ -1,35 +1,12 @@
-apply plugin: 'com.android.library'
-apply plugin: 'maven'
-apply plugin: 'signing'
-// configure android plugin
-android {
-    compileSdkVersion Integer.parseInt(COMPILE_SDK_VERSION)
-    buildToolsVersion BUILD_TOOLS_VERSION
-
-    defaultConfig {
-        minSdkVersion Integer.parseInt(MIN_SDK_VERSION)
-        targetSdkVersion Integer.parseInt(TARGET_SDK_VERSION)
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_6
-        targetCompatibility JavaVersion.VERSION_1_6
-    }
-
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            resources.srcDirs = ['src']
-            aidl.srcDirs = ['src']
-            renderscript.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
+subprojects {
+    buildscript {
+        repositories {
+            mavenCentral()
         }
-        androidTest.setRoot('tests')
-    }
-}
 
-dependencies {
-    compile 'com.android.support:support-v4:22.2.0'
+        dependencies {
+            classpath 'com.android.tools.build:gradle:1.2.3'
+            classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        }
+    }
 }
