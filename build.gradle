@@ -1,31 +1,51 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
+//apply plugin: 'maven'
+apply plugin: 'maven-publish'
+group = 'com.github.tzachi-dar'
 
 // This is the library version used when deploying the artifact
 version = "3.1.1"
 
+allprojects {
+    repositories {
+        // The order in which you list these repositories matter.
+        google()
+        jcenter()
+    }
+}
+
 buildscript {
     repositories {
+        google()
         jcenter()
-        mavenCentral()
+        //mavenCentral()
+        maven {
+            //url 'https://dl.google.com/dl/android/maven2'
+            url "https://plugins.gradle.org/m2/"
+            }
+
+        maven { url 'https://mvnrepository.com/artifact/com.android.tools.lint/lint-gradle-api' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.android.tools.build:gradle:7.1.1'
         classpath 'com.github.dcendents:android-maven-plugin:1.2'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+        //classpath  'com.android.support:support-v4:29.0.2'
+        //classpath 'com.android.support:support-core-utils:30.0.0'
     }
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "19.1.0"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 22
+        minSdkVersion 12
+        targetSdkVersion 30
         versionCode 1
         versionName version
     }
@@ -37,12 +57,17 @@ android {
         }
     }
     buildTypes {
+        lintOptions {
+            abortOnError false
+        }
     }
 }
 
 dependencies {
-    compile fileTree(include: '*.jar', dir: 'libs')
-    compile 'com.android.support:support-v4:22.2.0'
+    //compile fileTree(include: '*.jar', dir: 'libs')
+//    compile 'com.android.support:support-v4:22.2.0'
+//    compile 'com.android.support:support-v4:26.1.0'
+
 }
 
 def siteUrl = 'https://github.com/snigavig/ThreadSafeActiveAndroid'      // Homepage URL of the library
@@ -67,41 +92,7 @@ bintray {
     }
 }
 
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
 
-                // Add your description here
-                name 'Thread safe active record style SQLite persistence for Android'
-                url siteUrl
-
-                // Set your license
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id 'snigavig'
-                        name 'Dmitry Mina'
-                        email 'snigavig@gmail.com'
-                    }
-                }
-                scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
-
-                }
-            }
-        }
-    }
-}
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs

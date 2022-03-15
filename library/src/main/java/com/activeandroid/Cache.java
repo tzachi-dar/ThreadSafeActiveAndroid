@@ -18,7 +18,8 @@ package com.activeandroid;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v4.util.LruCache;
+//import android.support.v4.util.LruCache;
+import android.util.LruCache;
 
 import com.activeandroid.serializer.TypeSerializer;
 import com.activeandroid.util.Log;
