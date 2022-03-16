@@ -39,6 +39,7 @@ public final class From implements Sqlable {
     private String mOrderBy;
     private String mLimit;
     private String mOffset;
+    private String mIndexedBy;
 
     private List<Object> mArguments;
 
@@ -154,6 +155,11 @@ public final class From implements Sqlable {
         return this;
     }
 
+    public From indexedBy(String IndexedBy) {
+        mIndexedBy = IndexedBy;
+        return this;
+    }
+
     void addArguments(Object[] args) {
         for (Object arg : args) {
             if (arg.getClass() == boolean.class || arg.getClass() == Boolean.class) {
@@ -228,6 +234,14 @@ public final class From implements Sqlable {
         }
     }
 
+    private void addIndexedBy(final StringBuilder sql) {
+        if (mIndexedBy != null) {
+            sql.append("INDEXED BY ");
+            sql.append(mIndexedBy);
+            sql.append(" ");
+        }
+    }
+
     private String sqlString(final StringBuilder sql) {
 
         final String sqlString = sql.toString().trim();
@@ -254,6 +268,7 @@ public final class From implements Sqlable {
         addOrderBy(sql);
         addLimit(sql);
         addOffset(sql);
+        addIndexedBy(sql);
 
         return sqlString(sql);
     }
@@ -270,6 +285,7 @@ public final class From implements Sqlable {
         addHaving(sql);
         addLimit(sql);
         addOffset(sql);
+        addIndexedBy(sql);
 
         sql.append(")");
 
@@ -288,6 +304,7 @@ public final class From implements Sqlable {
         addHaving(sql);
         addLimit(sql);
         addOffset(sql);
+        addIndexedBy(sql);
 
         return sqlString(sql);
     }
