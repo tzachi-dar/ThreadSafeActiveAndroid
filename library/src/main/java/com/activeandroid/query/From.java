@@ -261,6 +261,7 @@ public final class From implements Sqlable {
         sql.append(mQueryBase.toSql());
 
         addFrom(sql);
+        addIndexedBy(sql);
         addJoins(sql);
         addWhere(sql);
         addGroupBy(sql);
@@ -268,7 +269,6 @@ public final class From implements Sqlable {
         addOrderBy(sql);
         addLimit(sql);
         addOffset(sql);
-        addIndexedBy(sql);
 
         return sqlString(sql);
     }
@@ -279,13 +279,13 @@ public final class From implements Sqlable {
         sql.append("SELECT EXISTS(SELECT 1 ");
 
         addFrom(sql);
+        addIndexedBy(sql);
         addJoins(sql);
         addWhere(sql);
         addGroupBy(sql);
         addHaving(sql);
         addLimit(sql);
         addOffset(sql);
-        addIndexedBy(sql);
 
         sql.append(")");
 
@@ -298,13 +298,13 @@ public final class From implements Sqlable {
         sql.append("SELECT COUNT(*) ");
 
         addFrom(sql);
+        addIndexedBy(sql);
         addJoins(sql);
         addWhere(sql);
         addGroupBy(sql);
         addHaving(sql);
         addLimit(sql);
         addOffset(sql);
-        addIndexedBy(sql);
 
         return sqlString(sql);
     }
